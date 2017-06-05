@@ -1,0 +1,64 @@
+
+
+bucket policy for s3 hosted website
+
+{
+  "Version":"2012-10-17",
+  "Statement":[{
+	"Sid":"PublicReadGetObject",
+        "Effect":"Allow",
+	  "Principal": "*",
+      "Action":["s3:GetObject"],
+      "Resource":["arn:aws:s3:::doo-gl/*"
+      ]
+    }
+  ]
+}
+
+
+remember to add cors config on api gateway methods
+
+Add dynamoDB access to lambda role
+
+Add "arn:aws:logs:eu-west-1:702594278817:log-group:/aws/lambda/SummerEvent1-post:*" to doo-gl role in IAM
+
+
+ns-1100.awsdns-09.org.
+ns-1998.awsdns-57.co.uk.
+ns-728.awsdns-27.net.
+ns-247.awsdns-30.com.
+
+
+POST TEST PAYLOAD
+
+{
+  "body": "{\"user\":\"DOO.GL\",\"message\":\"HELLO WORLD\"}",
+  "requestContext": {
+    "identity": {
+      "sourceIp": "127.0.0.1"
+    }
+  }
+}
+
+
+Steps
+Create DynamoDB table
+
+Create Lambdas
+ - Post
+ test using payload
+ make timeout 10sec
+ - Get
+ test and see payload returned
+
+Create API gateway
+ - create new resource
+ - create GET
+ - create POST
+ - enable CORS
+Add webpage
+
+
+
+
+

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body style="display: flex; justify-content: center; background-color: #FFF8dF; color: #999837; font-family: sans-serif">
+
+    <div style="max-width: 400px; width: 100%;">
+
+        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100%">
+
+            <div style="width: 100%; margin: 10px">
+                <div style="display: flex; height: 30px;">
+                    <input style="flex-grow: 1" id="userInput" type="text" placeholder="user"/>
+                    <input style="flex-grow: 1" id="messageInput" type="text" placeholder="message"/>
+                </div>
+                <button style="width: 100%; height: 30px; margin: 10px 0" onclick="onSubmit()">SUBMIT</button>
+
+                <script type="text/javascript">
+                    onSubmit = function () {
+
+                        const $messageInput = $("#messageInput");
+                        const message = $messageInput.val() || '';
+
+                        const $userInput = $("#userInput");
+                        const user = $userInput.val() || '';
+
+                        $.post(
+                            'https://pp4duh94a6.execute-api.eu-west-1.amazonaws.com/prod/messages',
+                            JSON.stringify({"user" : user, "message" : message}),
+                            function (data) {
+                                window.updateMessages();
+                                $userInput.val("");
+                                $messageInput.val("");
+                            }
+                        )
+                    };
+                </script>
+
+            </div>
+
+            <div id="messageContainer" style="width: 100%"></div>
+
+            <script type="text/javascript">
+                updateMessages = function() {
+                    var $container = $('#messageContainer');
+
+                    $.get(
+                        'https://pp4duh94a6.execute-api.eu-west-1.amazonaws.com/prod/messages',
+                        function (data) {
+                            console.log("data: " + JSON.stringify(data));
+                            const items = data.Items;
+                            $container.empty();
+                            items.forEach(function(item) {
+                                var $div = $('<div>');
+                                const ipAddress = item.ip_address.S;
+                                const user = item.user.S;
+                                const message = item.message.S;
+                                $div.text(user + "@" + ipAddress + " - " + message);
+                                $div.css('border', '#999837 solid 2px');
+                                $div.css('padding', '5px');
+                                $div.css('border-radius', '5px');
+                                $div.css('text-align', 'center');
+                                $div.css('margin', '10px 0');
+                                $container.append($div);
+                            })
+                        }
+                    )
+                };
+                window.onload = function () {
+                    updateMessages();
+                };
+            </script>
+
+
+
+        </div>
+
+
+    </div>
+
+
+</body>
+</html>
