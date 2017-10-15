@@ -9,7 +9,7 @@ exports.handler = function (event, context, callback) {
     console.log('Received event:', JSON.stringify(event, null, 2));
 
     // define a function that takes a status and a json object
-    // and calls amazon's api to retuen it as the HTTP response
+    // and calls amazon's api to return it as the HTTP response
     var returnResponse = function (status, response) {
         callback(
             null,
